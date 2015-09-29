@@ -182,6 +182,10 @@
 
 - (IBAction)setMode:(id)sender
 {
+    
+    //this is how keep it integrated
+    sender = integratedOnly;
+    
     // For legacy machines.
     if (sender == switchGPUs) {
         GTMLoggerInfo(@"Switching GPUs...");
@@ -222,7 +226,8 @@
         GTMLoggerInfo(@"Setting Dynamic Switching...");
         retval = [GSMux setMode:GSSwitcherModeDynamicSwitching];
     }
-
+    
+    [[NSUserDefaults standardUserDefaults] setBool:retval == [GSMux setMode:GSSwitcherModeForceIntegrated] forKey:@"Keep It Integrated"];
     // Only change status in case of GPU switch success.
     if (retval) {
         [integratedOnly setState:(sender == integratedOnly ? NSOnState : NSOffState)];
